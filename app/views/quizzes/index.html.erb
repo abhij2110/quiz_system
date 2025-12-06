@@ -7,6 +7,8 @@
         <a href="<%= quiz_path(quiz) %>"
            class="list-group-item list-group-item-action"
            style="
+             display: block;
+             width: 100%;
              border: 1px solid #ddd;
              border-radius: 8px;
              padding: 16px 20px;
@@ -18,6 +20,7 @@
            "
            onmouseover="this.style.background='#f8f9fa'; this.style.transform='scale(1.01)'"
            onmouseout="this.style.background='white'; this.style.transform='scale(1)'">
+          
           <%= quiz.title %>
 
           <span style="float: right; color: #888; font-size: 14px;">

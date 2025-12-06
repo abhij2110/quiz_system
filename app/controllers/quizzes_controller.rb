@@ -11,8 +11,9 @@ class QuizzesController < ApplicationController
   def submit
     @quiz = Quiz.includes(:questions).find(params[:id])
     @answers = params[:answers] || {}
-    @score = 0
-    @results = []
+
+    results = []
+    score = 0
 
     @quiz.questions.each do |q|
       user_answer = @answers[q.id.to_s]
@@ -22,30 +23,34 @@ class QuizzesController < ApplicationController
                   user_answer.to_s.strip.downcase == q.correct_answer.to_s.strip.downcase
                 when "text"
                   user_answer.to_s.strip.downcase == q.correct_answer.to_s.strip.downcase
+                else
+                  false
                 end
 
-      @score += 1 if correct
+      score += 1 if correct
 
-      @results << {
-        question: q.question_text,
-        user_answer: user_answer,
-        correct_answer: q.correct_answer,
-        correct: correct
+      results << {
+        "question" => q.question_text,
+        "user_answer" => user_answer,
+        "correct_answer" => q.correct_answer,
+        "correct" => correct
       }
     end
 
-    # Store temporarily in session (safe for small data)
-    session[:quiz_score] = @score
-    session[:quiz_results] = @results
+    # Store in session for GET result page
+    session[:quiz_score] = score
+    session[:quiz_results] = results
 
     redirect_to result_quiz_path(@quiz)
   end
 
+
   def result
     @quiz = Quiz.find(params[:id])
     @score = session[:quiz_score]
-    @results = session[:quiz_results]
+    @results = session[:quiz_results] || []
   end
+
 
 
 end

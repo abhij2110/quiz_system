@@ -1,55 +1,40 @@
 <div class="container" style="max-width: 800px; margin: 40px auto;">
 
-  <h1 class="text-center" style="font-weight: 600; margin-bottom: 10px;">
+  <h1 class="text-center" style="font-weight: 600;">
     Results for: <%= @quiz.title %>
   </h1>
 
-  <div class="text-center" style="margin-bottom: 30px;">
-    <span style="
-      display: inline-block;
-      font-size: 24px;
-      font-weight: 700;
-      padding: 10px 20px;
-      border-radius: 8px;
-      background: #f5f5f5;
-    ">
-      Score: 
-      <span style="color: <%= @score == @quiz.questions.count ? 'green' : '#007bff' %>;">
-        <%= @score %> / <%= @quiz.questions.count %>
-      </span>
-    </span>
-  </div>
+  <h2 class="text-center" style="margin-bottom: 30px;">
+    Score: <%= @score %> / <%= @quiz.questions.count %>
+  </h2>
 
-  <% @results.each_with_index do |r, i| %>
+  <% @results.each_with_index do |r, index| %>
     <div style="
       background: #fff;
       border: 1px solid #ddd;
-      border-radius: 10px;
       padding: 20px;
+      border-radius: 10px;
       margin-bottom: 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
     ">
       
       <p style="font-size: 18px; font-weight: 600;">
-        <%= i + 1 %>. <%= r[:question] %>
+        <%= index + 1 %>. <%= r["question"] %>
       </p>
 
-      <% if r[:correct] %>
-        <p style="color: green; font-size: 16px; font-weight: 500;">
-          ✅ Correct — Your answer: <strong><%= r[:user_answer] %></strong>
+      <% if r["correct"] %>
+        <p style="color: green; font-size: 16px;">
+          ✅ Correct — Your answer: <strong><%= r["user_answer"] %></strong>
         </p>
       <% else %>
-        <p style="color: red; font-size: 16px; font-weight: 500;">
-          ❌ Wrong — Your answer: 
-          <strong><%= r[:user_answer].presence || "No answer" %></strong>
+        <p style="color: red; font-size: 16px;">
+          ❌ Wrong — Your answer: <strong><%= r["user_answer"].presence || "No answer" %></strong>
         </p>
 
         <p style="font-size: 15px; color: #555;">
-          Correct answer: 
-          <strong><%= r[:correct_answer] %></strong>
+          Correct answer: <strong><%= r["correct_answer"] %></strong>
         </p>
       <% end %>
-
+      
     </div>
   <% end %>
 
@@ -61,10 +46,7 @@
       font-size: 18px;
       border-radius: 8px;
       text-decoration: none;
-      transition: background 0.2s;
-    "
-    onmouseover="this.style.background='#0056b3'"
-    onmouseout="this.style.background='#007bff'">
+    ">
       Back to Quiz List
     </a>
   </div>
