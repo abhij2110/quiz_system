@@ -1,0 +1,76 @@
+<div class="container" style="max-width: 800px; margin: 40px auto;">
+
+  <h1 class="text-center mb-4" style="font-weight: 600;">
+    <%= @quiz.title %>
+  </h1>
+
+  <%= form_with url: submit_quiz_path(@quiz), method: :post, local: true, data: { turbo: false } do %>
+
+    <% @quiz.questions.each_with_index do |q, index| %>
+      <div style="
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        transition: transform 0.2s, box-shadow 0.2s;
+      "
+      onmouseover="this.style.transform='scale(1.01)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)'"
+      onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.08)'">
+
+        <p style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">
+          <strong><%= index + 1 %>. <%= q.question_text %></strong>
+        </p>
+
+        <% if q.question_type == "mcq" %>
+          <% q.parsed_options.each do |opt| %>
+            <label style="display: block; margin-bottom: 8px; font-size: 16px;">
+              <input type="radio" name="answers[<%= q.id %>]" value="<%= opt %>" style="margin-right: 6px;">
+              <%= opt %>
+            </label>
+          <% end %>
+
+        <% elsif q.question_type == "boolean" %>
+          <label style="margin-right: 20px; font-size: 16px;">
+            <input type="radio" name="answers[<%= q.id %>]" value="true" style="margin-right: 6px;">
+            True
+          </label>
+          <label style="font-size: 16px;">
+            <input type="radio" name="answers[<%= q.id %>]" value="false" style="margin-right: 6px;">
+            False
+          </label>
+
+        <% elsif q.question_type == "text" %>
+          <input type="text" name="answers[<%= q.id %>]" 
+                 style="
+                   width: 100%;
+                   padding: 10px; 
+                   font-size: 16px; 
+                   border-radius: 6px; 
+                   border: 1px solid #ccc;
+                 ">
+        <% end %>
+
+      </div>
+    <% end %>
+
+    <div class="text-center">
+      <%= submit_tag "Submit Quiz", 
+            style: "
+              background: #007bff; 
+              border: none; 
+              padding: 12px 24px; 
+              font-size: 18px; 
+              color: white; 
+              border-radius: 8px; 
+              cursor: pointer;
+              transition: background 0.2s;
+            ",
+            onmouseover: "this.style.background='#0056b3'",
+            onmouseout: "this.style.background='#007bff'" %>
+    </div>
+
+  <% end %>
+
+</div>

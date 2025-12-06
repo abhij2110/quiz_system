@@ -5,4 +5,11 @@ class Question < ApplicationRecord
 
   validates :question_type, inclusion: { in: QUESTION_TYPES }
   validates :question_text, presence: true
+
+  def parsed_options
+    return [] if options.blank?
+
+    options.is_a?(String) ? JSON.parse(options) : options
+  end
+  
 end
